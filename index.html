@@ -999,6 +999,7 @@ const categories = [
 ];
 
 const grid = document.getElementById('categoriesGrid');
+  
 categories.forEach(cat => {
   const badgesHTML = cat.badges.map(b =>
     `<span class="badge-new ${b === 'nuevo' ? 'badge-nuevo' : 'badge-usado'}">${b}</span>`
