@@ -1078,15 +1078,15 @@ function submitForm() {
   const pieza = document.querySelector('textarea').value;
 
   const mensaje =
-Hola, quiero una cotización.
+`Hola, quiero una cotización.
 
 👤 Nombre: ${nombre}
 📱 WhatsApp: ${whatsapp}
 🚗 Marca: ${marca}
 🚘 Modelo: ${modelo}
-🔧 Pieza: ${pieza};
+🔧 Pieza: ${pieza}`;
 
-  window.open(https://wa.me/5492964355834?text=${encodeURIComponent(mensaje)}, "_blank");
+  window.open(`https://wa.me/5492964355834?text=${encodeURIComponent(mensaje)}`, "_blank");
 }
 
 /* ── SCROLL NAV HIGHLIGHT ────────────────────────────────────────────────────── */
