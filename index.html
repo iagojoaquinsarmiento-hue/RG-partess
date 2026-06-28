@@ -1070,13 +1070,22 @@ function toggleMenu() {
 }
 
 function submitForm() {
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = '¡Consulta enviada! Te contactamos pronto.';
-  btn.style.background = '#16a34a';
-  setTimeout(() => {
-    btn.textContent = 'Enviar Consulta';
-    btn.style.background = '';
-  }, 3000);
+  const nombre = document.querySelector('input[placeholder="Nombre completo"]').value;
+  const whatsapp = document.querySelector('input[placeholder="WhatsApp (Ej: 2964123456)"]').value;
+  const marca = document.querySelector('input[placeholder="Marca"]').value;
+  const modelo = document.querySelector('input[placeholder="Modelo"]').value;
+  const pieza = document.querySelector('textarea').value;
+
+  const mensaje =
+Hola, quiero una cotización.
+
+👤 Nombre: ${nombre}
+📱 WhatsApp: ${whatsapp}
+🚗 Marca: ${marca}
+🚘 Modelo: ${modelo}
+🔧 Pieza: ${pieza};
+
+  window.open(https://wa.me/5492964355834?text=${encodeURIComponent(mensaje)}, "_blank");
 }
 
 /* ── SCROLL NAV HIGHLIGHT ────────────────────────────────────────────────────── */
