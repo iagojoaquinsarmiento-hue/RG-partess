@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutopartesRG – Tu autoparte está acá</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #191c1d;
+      background: #f8f9fa;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button, input, select, textarea { font-family: inherit; }
+
+    /* ─── DESIGN TOKENS ────────────────────────────────────────────────────── */
+    :root {
+      --red: #dc2626;
+      --red-dark: #bb0112;
+      --black: #000000;
+      --dark: #1f2937;
+      --white: #ffffff;
+      --grey-bg: #f9fafb;
+      --grey-light: #e5e7eb;
+      --grey-mid: #6b7280;
+      --grey-text: #4c4546;
+      --green-wa: #25d366;
+      --radius: 4px;
+    }
+
+    /* ─── UTILITIES ────────────────────────────────────────────────────────── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
+    .badge-new  { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
+    .badge-nuevo { background: #dcfce7; color: #166534; }
+    .badge-usado { background: #fef9c3; color: #854d0e; }
+
+    /* ─── NAVIGATION ───────────────────────────────────────────────────────── */
+    .nav {
+      background: var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #1f2937;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 0 20px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #9ca3af;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--red); }
+    .btn-nav-cta {
+      background: var(--green-wa);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s;
+    }
+    .btn-nav-cta:hover { opacity: 0.9; }
+    .hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 2px; background: #fff; display: block; }
+
+    /* ─── HERO ─────────────────────────────────────────────────────────────── */
+    .hero {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&q=80&auto=format');
+      background-size: cover;
+      background-position: center right;
+      opacity: 0.35;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 64px 20px;
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      max-width: 520px;
+    }
+    .hero h1 em { font-style: normal; color: var(--red); }
+    .hero-sub {
+      margin-top: 16px;
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #b91c1c; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid #374151;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--green-wa); color: var(--green-wa); }
+
+    /* ─── SEARCH BAR ───────────────────────────────────────────────────────── */
+    .search-section {
+      background: var(--white);
+      border-bottom: 1px solid var(--grey-light);
+      padding: 28px 0;
+    }
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .search-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--grey-mid);
+      margin-bottom: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .search-field select,
+    .search-field input {
+      width: 100%;
+      height: 48px;
+      padding: 0 12px;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 14px;
+      color: var(--black);
+      background: var(--white);
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+    }
+    .search-field select:focus,
+    .search-field input:focus {
+      outline: none;
+      border: 2px solid var(--black);
+    }
+    .search-field input { background-image: none; }
+    .btn-search {
+      height: 48px;
+      padding: 0 28px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-search:hover { background: var(--red); }
+    .search-note {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--grey-mid);
+    }
+
+    /* ─── CATEGORIES ───────────────────────────────────────────────────────── */
+    .categories-section {
+      padding: 56px 0;
+      background: var(--grey-bg);
+    }
+    .section-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 36px;
+      color: var(--black);
+      text-transform: uppercase;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .cat-card {
+      background: var(--white);
+      border: 1px solid var(--grey-light);
+      border-radius: var(--radius);
+      padding: 16px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .cat-card:hover {
+      border-color: var(--red);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .cat-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--black);
+    }
+    .cat-icon svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .cat-name {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    .cat-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+
+    /* ─── STATS ────────────────────────────────────────────────────────────── */
+    .stats-section {
+      background: var(--black);
+      padding: 48px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      padding: 24px 16px;
+      border-right: 1px solid #1f2937;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-icon { color: var(--red); }
+    .stat-icon svg { width: 32px; height: 32px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.4;
+      max-width: 160px;
+    }
+
+    /* ─── QUICK QUOTE ──────────────────────────────────────────────────────── */
+    .quote-section {
+      padding: 56px 0;
+      background: var(--white);
+    }
+    .quote-wrapper {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 0;
+      border: 1px solid var(--grey-light);
+      border-radius: var(--radius);
+      overflow: hidden;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .quote-info {
+      background: var(--black);
+      padding: 40px 32px;
+      color: var(--white);
+    }
+    .quote-info h2 {
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .quote-info p {
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .quote-meta { display: flex; flex-direction: column; gap: 10px; }
+    .quote-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+    .quote-meta-item svg { width: 16px; height: 16px; stroke: var(--red); stroke-width: 2; fill: none; flex-shrink: 0; }
+    .quote-form {
+      background: var(--grey-bg);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grey-mid); font-family: 'JetBrains Mono', monospace; }
+    .form-group input, .form-group textarea {
+      height: 48px;
+      padding: 0 14px;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 14px;
+      background: var(--white);
+      color: var(--black);
+      transition: border 0.15s;
+    }
+    .form-group textarea { height: 80px; padding: 12px 14px; resize: none; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border: 2px solid var(--black); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: #9ca3af; }
+    .btn-submit {
+      height: 48px;
+      background: var(--red);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.15s;
+    }
+    .btn-submit:hover { background: #b91c1c; }
+
+    /* ─── ABOUT ────────────────────────────────────────────────────────────── */
+    .about-section {
+      padding: 72px 0;
+      background: var(--grey-bg);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .about-image {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #1f2937;
+    }
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) contrast(1.1);
+    }
+    .about-content h2 {
+      font-size: 28px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+    .about-content p {
+      font-size: 15px;
+      color: var(--grey-text);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+    .about-tag {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 8px;
+    }
+    .about-tag-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--grey-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .about-tag-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    /* ─── FAQ ──────────────────────────────────────────────────────────────── */
+    .faq-section {
+      padding: 72px 0;
+      background: var(--white);
+    }
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--grey-light);
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--grey-light);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 20px 0;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-question:hover { color: var(--red); }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--grey-light);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .faq-chevron svg { width: 12px; height: 12px; stroke: var(--grey-mid); stroke-width: 2; fill: none; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-answer-inner {
+      padding: 0 0 20px;
+      font-size: 14px;
+      color: var(--grey-text);
+      line-height: 1.7;
+    }
+
+    /* ─── CTA SECTION ──────────────────────────────────────────────────────── */
+    .cta-section {
+      background: var(--dark);
+      padding: 64px 0;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .btn-wa-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-wa);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+      transition: opacity 0.15s;
+    }
+    .btn-wa-cta:hover { opacity: 0.9; }
+    .btn-wa-cta svg { width: 22px; height: 22px; }
+    .cta-sub {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────────────────────── */
+    .footer {
+      background: #0a0a0a;
+      border-top: 1px solid #1f2937;
+      padding: 48px 0 28px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-brand .logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .footer-brand .logo span { color: var(--red); }
+    .footer-brand p {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li { font-size: 13px; color: #6b7280; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+    .footer-col ul li svg { width: 14px; height: 14px; stroke: var(--red); stroke-width: 2; fill: none; flex-shrink: 0; margin-top: 2px; }
+    .footer-col ul li a { color: #6b7280; transition: color 0.15s; }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-social { display: flex; flex-direction: column; gap: 6px; }
+    .footer-social a { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; transition: color 0.15s; }
+    .footer-social a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid #1f2937;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-bottom p { font-size: 12px; color: #4b5563; }
+
+    /* ─── WHATSAPP FLOAT ───────────────────────────────────────────────────── */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 200;
+      width: 56px;
+      height: 56px;
+      background: var(--green-wa);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45), 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.15s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 30px; height: 30px; fill: var(--white); }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .categories-grid { grid-template-columns: repeat(4, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-top: 1px solid #1f2937; }
+      .stat-item:nth-child(4) { border-top: 1px solid #1f2937; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 48px;
+        left: 0; right: 0;
+        background: var(--black);
+        padding: 20px;
+        gap: 16px;
+        border-bottom: 1px solid #1f2937;
+        z-index: 99;
+      }
+      .btn-nav-cta { display: none; }
+      .hero h1 { font-size: 32px; }
+      .search-form { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
+      .search-form > *:last-child { grid-column: 1 / -1; }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-image { max-height: 260px; }
+      .quote-wrapper { grid-template-columns: 1fr; }
+      .quote-info { padding: 28px 24px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 480px) {
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .search-form { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><span>AUTOPARTES</span>RG</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" class="active">Inicio</a></li>
+      <li><a href="#categorias">Productos</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="https://wa.me/5492964000000" class="btn-nav-cta" target="_blank">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.528 5.845L0 24l6.338-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.787 9.787 0 01-5.003-1.374l-.36-.213-3.762.896.952-3.674-.234-.376A9.765 9.765 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      Consultá por WhatsApp
+    </a>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Tu autoparte está acá —<br>usada o nueva, <em>modelo<br>2005</em> en adelante.</h1>
+    <p class="hero-sub">Especializados en repuestos de carrocería e iluminación. Envíos garantizados a Río Grande, Ushuaia y Tolhuin. El mejor stock del Fin del Mundo.</p>
+    <div class="hero-actions">
+      <a href="#categorias" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/></svg>
+        Ver Productos
+      </a>
+      <a href="https://wa.me/5492964000000" class="btn-secondary" target="_blank">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.528 5.845L0 24l6.338-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.787 9.787 0 01-5.003-1.374l-.36-.213-3.762.896.952-3.674-.234-.376A9.765 9.765 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+        Consultar por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEARCH ────────────────────────────────────────────────────────────────── -->
+<section class="search-section">
+  <div class="container">
+    <div class="search-form">
+      <div class="search-field">
+        <label>Marca</label>
+        <select>
+          <option value="">Seleccionar</option>
+          <option>Toyota</option><option>Ford</option><option>Chevrolet</option>
+          <option>Volkswagen</option><option>Renault</option><option>Peugeot</option>
+          <option>Fiat</option><option>Nissan</option><option>Honda</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Modelo</label>
+        <select>
+          <option value="">Seleccionar</option>
+          <option>Hilux</option><option>Ranger</option><option>Amarok</option>
+          <option>Duster</option><option>Oroch</option><option>S10</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Año (2005+)</label>
+        <select>
+          <option value="">Seleccionar</option>
+          <option>2024</option><option>2023</option><option>2022</option><option>2021</option>
+          <option>2020</option><option>2019</option><option>2018</option><option>2017</option>
+          <option>2016</option><option>2015</option><option>2014</option><option>2013</option>
+          <option>2012</option><option>2011</option><option>2010</option><option>2009</option>
+          <option>2008</option><option>2007</option><option>2006</option><option>2005</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label>Pieza</label>
+        <input type="text" placeholder="Ej. Capó" />
+      </div>
+      <button class="btn-search">Buscar mi autoparte</button>
+    </div>
+    <p class="search-note">Si no encontrás lo que buscás, te conseguimos cualquier pieza. <strong>Consultanos.</strong></p>
+  </div>
+</section>
+
+<!-- ── CATEGORIES ────────────────────────────────────────────────────────────── -->
+<section class="categories-section" id="categorias">
+  <div class="container">
+    <h2 class="section-title">Categorías Destacadas</h2>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="stat-value">15 Años</div>
+        <div class="stat-label">Trayectoria ininterrumpida en el mercado fueguino.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="stat-value">Verificadas</div>
+        <div class="stat-label">Cada pieza usada es revisada antes de la entrega.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <div class="stat-value">Atención</div>
+        <div class="stat-label">Asesoramiento técnico personalizado por expertos.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        </div>
+        <div class="stat-value">Toda la Isla</div>
+        <div class="stat-label">Envíos directos a Ushuaia y Tolhuin sin demora.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUICK QUOTE ────────────────────────────────────────────────────────────── -->
+<section class="quote-section" id="contacto">
+  <div class="container">
+    <div class="quote-wrapper">
+      <div class="quote-info">
+        <h2>Cotización Rápida</h2>
+        <p>Completá los datos y te enviamos el presupuesto con stock real y fotos por WhatsApp.</p>
+        <div class="quote-meta">
+          <div class="quote-meta-item">
+            <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>Río Grande, Tierra del Fuego</span>
+          </div>
+          <div class="quote-meta-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>Lunes a Domingos 09:00 – 21:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="quote-form">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" placeholder="Nombre completo" />
+        </div>
+        <div class="form-group">
+          <label>WhatsApp</label>
+          <input type="tel" placeholder="WhatsApp (Ej: 2964123456)" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Marca</label>
+            <input type="text" placeholder="Marca" />
+          </div>
+          <div class="form-group">
+            <label>Modelo</label>
+            <input type="text" placeholder="Modelo" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pieza que buscás</label>
+          <textarea placeholder="Pieza que buscás"></textarea>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">Enviar Consulta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────────────────────────── -->
+<section class="about-section" id="nosotros">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80&auto=format" alt="Taller Industrial Autopartes TDF" loading="lazy" />
+      </div>
+      <div class="about-content">
+        <h2>Pasión por los Fierros</h2>
+        <p>Nacimos en Río Grande con un objetivo claro: resolver la falta de piezas críticas para vehículos existentes en nuestra provincia. Nos especializamos en modelos del 2005 en adelante, asegurando que cada cliente encuentre exactamente lo que necesita sin tener que esperar semanas a que llegue de Buenos Aires.</p>
+        <p>Nuestro compromiso es con el taller local y el particular. Trabajamos con transparencia, ofreciendo opciones nuevas y usadas con garantía de funcionamiento.</p>
+        <div class="about-tag">
+          <span class="about-tag-label">Sobre nosotros</span>
+          <span class="about-tag-value">Industrial Autopartes TDF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ───────────────────────────────────────────────────────────────────── -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="section-title">Preguntas Frecuentes</h2>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="container">
+    <h2>¿Necesitás una autoparte? Escribinos ahora</h2>
+    <a href="https://wa.me/5492964000000" class="btn-wa-cta" target="_blank">
+      <svg viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.528 5.845L0 24l6.338-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.787 9.787 0 01-5.003-1.374l-.36-.213-3.762.896.952-3.674-.234-.376A9.765 9.765 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+      </svg>
+      WhatsApp Directo
+    </a>
+    <p class="cta-sub">Respuesta inmediata en horario comercial</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span>AUTOPARTES</span>RG</div>
+        <p>Especializados en autopartes de toda performance y Todos los modelos confirmados para toda Tierra del Fuego.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto &amp; Ubicación</h4>
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Río Grande, Tierra del Fuego
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>C. Iglesias 9 Martes 09:00 – 18:00</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Sábados 09:00 – 13:00
+          </li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Redes</h4>
+        <div class="footer-social">
+          <a href="#">FACEBOOK</a>
+          <a href="#">INSTAGRAM: RG_PARTES</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 AutopartesRG – Todos los derechos reservados.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#374151;">Industrial Autopartes TDF</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WA FLOAT ───────────────────────────────────────────────────────────────── -->
+<a href="https://wa.me/5492964000000" class="wa-float" target="_blank" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.528 5.845L0 24l6.338-1.508A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.787 9.787 0 01-5.003-1.374l-.36-.213-3.762.896.952-3.674-.234-.376A9.765 9.765 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+  </svg>
+</a>
+
+<script>
+/* ── CATEGORY DATA ──────────────────────────────────────────────────────────── */
+const categories = [
+  { name: 'Antinieblas', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M2 12h1m18 0h1M12 2v1m0 18v1M4.22 4.22l.71.71m13.86 13.86l.71.71M4.22 19.78l.71-.71M18.79 5.22l.71-.71"/></svg>` },
+  { name: 'Paragolpes TDI', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1"/><path d="M3 12h18"/></svg>` },
+  { name: 'Lateral', badges: ['usado'], icon: `<svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>` },
+  { name: 'Ópticas', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` },
+  { name: 'Portón', badges: ['usado'], icon: `<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M5 9h14M12 3v6"/></svg>` },
+  { name: 'Defensa', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>` },
+  { name: 'Radiadores', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M7 4v16M12 4v16M17 4v16M3 8h18M3 12h18M3 16h18"/></svg>` },
+  { name: 'Electro/Ventiladores', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>` },
+  { name: 'Parrilla', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="1"/><path d="M2 10h20M2 14h20M7 7v10M12 7v10M17 7v10"/></svg>` },
+  { name: 'Puertas TDI', badges: ['usado'], icon: `<svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z"/><circle cx="16" cy="12" r="1"/><path d="M5 8h14"/></svg>` },
+  { name: 'Guardabarros', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M3 17v-2a9 9 0 019-9h9"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>` },
+  { name: 'Capó', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><path d="M4 16l3-9h10l3 9H4z"/><path d="M2 16h20v2H2z"/><path d="M7 16l1-5h8l1 5"/></svg>` },
+  { name: 'Faros', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><path d="M9 6H5a2 2 0 00-2 2v8a2 2 0 002 2h4l7-6-7-6z"/><path d="M16 12h5"/><path d="M16 8l3-2"/><path d="M16 16l3 2"/></svg>` },
+  { name: 'Motor de Arranque', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0121 12M12 2a10 10 0 018.66 5"/><path d="M4.93 19.07A10 10 0 012 12m10 10a10 10 0 01-8.66-5"/></svg>` },
+  { name: 'Alternador', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>` },
+  { name: 'Antinieblas', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M2 12h1m18 0h1M12 2v1m0 18v1M4.22 4.22l.71.71m13.86 13.86l.71.71M4.22 19.78l.71-.71M18.79 5.22l.71-.71"/></svg>` },
+  { name: 'Paragolpes TDI', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1"/><path d="M3 12h18"/></svg>` },
+  { name: 'Lateral', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>` },
+  { name: 'Ópticas', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` },
+  { name: 'Portón', badges: ['usado'], icon: `<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M5 9h14M12 3v6"/></svg>` },
+  { name: 'Defensa', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>` },
+  { name: 'Radiadores', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M7 4v16M12 4v16M17 4v16M3 8h18M3 12h18M3 16h18"/></svg>` },
+  { name: 'Electro/Ventiladores', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>` },
+  { name: 'Parrilla', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="1"/><path d="M2 10h20M2 14h20M7 7v10M12 7v10M17 7v10"/></svg>` },
+  { name: 'Puertas TDI', badges: ['usado'], icon: `<svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 011 1v16a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z"/><circle cx="16" cy="12" r="1"/><path d="M5 8h14"/></svg>` },
+  { name: 'Guardabarros', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M3 17v-2a9 9 0 019-9h9"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>` },
+  { name: 'Capó', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><path d="M4 16l3-9h10l3 9H4z"/><path d="M2 16h20v2H2z"/></svg>` },
+  { name: 'Faros', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><path d="M9 6H5a2 2 0 00-2 2v8a2 2 0 002 2h4l7-6-7-6z"/><path d="M16 12h5"/></svg>` },
+  { name: 'Motor de Arranque', badges: ['nuevo', 'usado'], icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0121 12M4.93 19.07A10 10 0 012 12"/></svg>` },
+  { name: 'Alternador', badges: ['nuevo'], icon: `<svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>` },
+];
+
+const grid = document.getElementById('categoriesGrid');
+categories.forEach(cat => {
+  const badgesHTML = cat.badges.map(b =>
+    `<span class="badge-new ${b === 'nuevo' ? 'badge-nuevo' : 'badge-usado'}">${b}</span>`
+  ).join('');
+  grid.innerHTML += `
+    <div class="cat-card">
+      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-badges">${badgesHTML}</div>
+    </div>`;
+});
+
+/* ── FAQ DATA ────────────────────────────────────────────────────────────────── */
+const faqs = [
+  {
+    q: '¿Realizan envíos a Ushuaia y Tolhuin?',
+    a: 'Sí, enviamos a toda la provincia de Tierra del Fuego. Los envíos a Ushuaia y Tolhuin salen los martes y viernes, con tiempo de entrega de 24 a 48hs hábiles.'
+  },
+  {
+    q: '¿Tienen repuestos para modelos anteriores al 2005?',
+    a: 'Nuestro stock principal cubre modelos 2005 en adelante. Para vehículos más antiguos, podemos realizar búsqueda especial. Consultanos por WhatsApp y hacemos lo posible para conseguirlo.'
+  },
+  {
+    q: '¿Los repuestos usados tienen garantía?',
+    a: 'Todos los repuestos usados son revisados antes de la venta y tienen garantía de funcionamiento. En caso de presentar inconvenientes, los reemplazamos o devolvemos el dinero.'
+  },
+  {
+    q: '¿Cómo sé si la pieza es compatible con mi auto?',
+    a: 'Usá el buscador con la marca, modelo y año de tu vehículo, o consultanos directamente por WhatsApp enviando una foto del repuesto que necesitás. Nuestros asesores te confirman la compatibilidad en minutos.'
+  }
+];
+
+const faqList = document.getElementById('faqList');
+faqs.forEach((faq, i) => {
+  faqList.innerHTML += `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-question" onclick="toggleFaq(${i})">
+        ${faq.q}
+        <span class="faq-chevron">
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer" id="faq-answer-${i}">
+        <div class="faq-answer-inner">${faq.a}</div>
+      </div>
+    </div>`;
+});
+
+/* ── INTERACTIONS ────────────────────────────────────────────────────────────── */
+function toggleFaq(i) {
+  const item = document.getElementById(`faq-${i}`);
+  const answer = document.getElementById(`faq-answer-${i}`);
+  const isOpen = item.classList.contains('open');
+
+  // close all
+  document.querySelectorAll('.faq-item').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-answer').style.maxHeight = '0';
+  });
+
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+function submitForm() {
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '¡Consulta enviada! Te contactamos pronto.';
+  btn.style.background = '#16a34a';
+  setTimeout(() => {
+    btn.textContent = 'Enviar Consulta';
+    btn.style.background = '';
+  }, 3000);
+}
+
+/* ── SCROLL NAV HIGHLIGHT ────────────────────────────────────────────────────── */
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === `#${current}`) a.classList.add('active');
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
